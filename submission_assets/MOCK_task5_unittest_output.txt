@@ -1,0 +1,10 @@
+test_emotion_detection (test_emotion_detection.TestEmotionDetection) ... 
+
+  'I am so happy I am doing this' -> joy (expected joy) OK
+  'I am so angry I could scream' -> anger (expected anger) OK
+  'I am so disgusted by this' -> disgust (expected disgust) OK
+  'I am so scared and afraid' -> fear (expected fear) OK
+  'I am so sad about this' -> sadness (expected sadness) OK
+
+OK
+Ran 1 test in 0.05s
