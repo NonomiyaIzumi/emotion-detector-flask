@@ -24,10 +24,17 @@ def to_latin1(text):
     return text.encode("latin-1", errors="replace").decode("latin-1")
 
 
-def read_text_asset(name):
+def read_text_asset(name, mock_fallback=None):
     path = ASSETS / name
     if path.exists():
         return to_latin1(path.read_text(encoding="utf-8", errors="replace"))
+    if mock_fallback:
+        mock_path = ASSETS / mock_fallback
+        if mock_path.exists():
+            content = mock_path.read_text(encoding="utf-8", errors="replace")
+            return to_latin1(
+                "[SIMULATED - local mock Watson API, not the real Watson NLP service]\n\n" + content
+            )
     return PENDING
 
 
@@ -135,7 +142,7 @@ def build():
     pdf.sub_header("Activity 1: EmotionDetection/emotion_detection.py")
     pdf.code_block(read_code("EmotionDetection/emotion_detection.py"))
     pdf.sub_header("Activity 2: terminal output - import and test without errors")
-    pdf.output_block(read_text_asset("task2_raw_output.txt"))
+    pdf.output_block(read_text_asset("task2_raw_output.txt", mock_fallback="MOCK_task2_task3_output.txt"))
 
     # Task 3
     pdf.add_page()
@@ -146,7 +153,7 @@ def build():
         "'anger', 'disgust', 'fear', 'joy', 'sadness', and 'dominant_emotion'."
     )
     pdf.sub_header("Activity 2: terminal output showing the accurate output format")
-    pdf.output_block(read_text_asset("task3_formatted_output.txt"))
+    pdf.output_block(read_text_asset("task3_formatted_output.txt", mock_fallback="MOCK_task2_task3_output.txt"))
 
     # Task 4
     pdf.add_page()
@@ -162,7 +169,7 @@ def build():
     pdf.sub_header("Activity 1: test_emotion_detection.py")
     pdf.code_block(read_code("test_emotion_detection.py"))
     pdf.sub_header("Activity 2: terminal output - all unit tests passed")
-    pdf.output_block(read_text_asset("task5_unittest_output.txt"))
+    pdf.output_block(read_text_asset("task5_unittest_output.txt", mock_fallback="MOCK_task5_unittest_output.txt"))
 
     # Task 6
     pdf.add_page()
